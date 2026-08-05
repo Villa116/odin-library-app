@@ -57,14 +57,38 @@ function displayBooks(bookArray) {
   bookArray.forEach(book => {
     const card = document.createElement('div');
     card.className = 'book-card';
+
+    const toggleBtnText = book.read === "Yes" ? "Mark Unread" : "Mark Read";
+    const toggleBtnClass = book.read === "Yes" ? "btn-unread" : "btn-read";
+
     card.innerHTML = `
       <h3>${book.title}</h3>
       <p class="author">By: ${book.author}</p>
       <p class="pages">Pages: ${book.pages}</p>
       <p class="year">Published: ${book.year}</p>
-      <p class="read">Read: ${book.read}</p>
+      <p class="read">Read: <strong>${book.read}</strong></p>
+      <button class="btn ${toggleBtnClass} toggle-status-btn" data-id=${book.id}>${toggleBtnText}</button>
     `;
     container.appendChild(card);
+  });
+
+  setupToggleListners();
+}
+
+function setupToggleListners() {
+  const toggleButtons = document.querySelectorAll('.toggle-status-btn');
+
+  toggleButtons.forEach(button => {
+    button.addEventListener('click', (event) => {
+      const bookId = event.target.getAttribute('data-id');
+      const targetBook = myLibrary.find(book => book.id === bookId);
+
+      if (targetBook) {
+        targetBook.read = targetBook.read === "Yes" ? "No" : "Yes";
+
+        displayBooks(myLibrary);
+      }
+    });
   });
 }
 

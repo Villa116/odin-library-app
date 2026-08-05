@@ -122,3 +122,25 @@ select:focus {
   background-color: #e5e7eb;
   color: #1f2937;
 }
+
+.btn-read {
+  background-color: #10b981;
+  color: white;
+  margin-top: 12px;
+  width: 100%;
+}
+
+.btn-read:hover {
+  background-color: #059669;
+}
+
+.btn-unread {
+  background-color: #f59e0b;
+  color: white;
+  margin-top: 12px;
+  width: 100%;
+}
+
+.btn-unread:hover {
+  background-color: #d97706;
+}
