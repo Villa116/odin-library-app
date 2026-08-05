@@ -1,3 +1,9 @@
+let myLibrary = [
+  { title: "The Hobbit", author: "J.R.R. Tolkien", pages: 600, year: 1937, read: "Yes", id: "ab122" },
+  { title: "1984", author: "George Orwell", pages: 450, year: 1949, read: "No", id: "bc453" },
+  { title: "To Kill a Mockingbird", author: "Harper Lee", pages: 510, year: 1960, read: "Yes", id: "ie335" }
+];
+
 const modal = document.getElementById('form-modal');
 const openFormBtn = document.getElementById('open-form-btn');
 const closeFormBtn = document.getElementById('close-form-btn');
@@ -27,13 +33,6 @@ bookForm.addEventListener('submit', (event) => {
   modal.classList.add('hidden');
   bookForm.reset();
 });
-
-
-const myLibrary = [
-  { title: "The Hobbit", author: "J.R.R. Tolkien", pages: 600, year: 1937, read: "Yes", id: "ab122" },
-  { title: "1984", author: "George Orwell", pages: 450, year: 1949, read: "No", id: "bc453" },
-  { title: "To Kill a Mockingbird", author: "Harper Lee", pages: 510, year: 1960, read: "Yes", id: "ie335" }
-];
 
 function Book(author, title, pages, year, read, id) {
   this.author = author;
@@ -67,12 +66,16 @@ function displayBooks(bookArray) {
       <p class="pages">Pages: ${book.pages}</p>
       <p class="year">Published: ${book.year}</p>
       <p class="read">Read: <strong>${book.read}</strong></p>
-      <button class="btn ${toggleBtnClass} toggle-status-btn" data-id=${book.id}>${toggleBtnText}</button>
+      <div class="card-actions">
+      <button class="btn ${toggleBtnClass} toggle-status-btn" data-id="${book.id}">${toggleBtnText}</button>
+      <button class="btn btn-delete delete-btn" data-id="${book.id}">Delete</button>
+      </div>
     `;
     container.appendChild(card);
   });
 
   setupToggleListners();
+  setupDeleteListeners();
 }
 
 function setupToggleListners() {
@@ -88,6 +91,25 @@ function setupToggleListners() {
 
         displayBooks(myLibrary);
       }
+    });
+  });
+}
+
+function setupDeleteListeners() {
+  const deleteButtons = document.querySelectorAll('.delete-btn');
+
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', (event) => {
+      const bookId = event.target.getAttribute('data-id');
+      const targetBook = myLibrary.find(book => book.id === bookId);
+      const bookTitle = targetBook ? `"${targetBook.title}"` : "this book";
+      const userConfirmed = window.confirm(`Are you sure you want to permanently delete ${bookTitle}`);
+
+      if (userConfirmed) {
+        myLibrary = myLibrary.filter(book => book.id != bookId);
+        displayBooks(myLibrary);
+      }
+
     });
   });
 }
