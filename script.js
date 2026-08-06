@@ -68,7 +68,7 @@ function displayBooks(bookArray) {
       <p class="read">Read: <strong>${book.read}</strong></p>
       <div class="card-actions">
       <button class="btn ${toggleBtnClass} toggle-status-btn" data-id="${book.id}">${toggleBtnText}</button>
-      <button class="btn btn-delete delete-btn" data-id="${book.id}">Delete</button>
+      <button class="btn btn-delete delete-btn" data-id="${book.id}">Remove</button>
       </div>
     `;
     container.appendChild(card);
