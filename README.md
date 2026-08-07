@@ -45,7 +45,7 @@ The application employs a modal-overlay architecture coupled with a auto-filling
 
 ## 🚀 Live Demo
 
-[👉 Click here to view the live deployment of the Odin Library App!](https://yourusername.github.io/odin-library/)
+[👉 Click here to view the live deployment of the Odin Library App!](https://villa116.github.io/odin-library-app/)
 
 ---
 
@@ -105,13 +105,13 @@ The card layout uses modern CSS Grid with `auto-fill` and `minmax()` boundaries 
 1. Clone the repo
 
    ```bash
-   git clone https://github.com/yourusername/odin-library.git
+   git clone https://github.com/Villa116/odin-library-app.git
    ```
 
 2. Enter the folder
 
    ````bash
-   cd odin-library
+   cd odin-library-app
    ```bash
 
    ````
