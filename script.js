@@ -34,17 +34,15 @@ bookForm.addEventListener('submit', (event) => {
   bookForm.reset();
 });
 
-function Book(author, title, pages, year, read, id) {
-  if (!new.target) {
-    throw Error("You must use the 'new' operator to call the constructor");
+class Book {
+  constructor(author, title, pages, year, read, id) {
+    this.author = author;
+    this.title = title;
+    this.pages = pages;
+    this.year = year;
+    this.read = read;
+    this.id = id
   }
-
-  this.author = author;
-  this.title = title;
-  this.pages = pages;
-  this.read = read;
-  this.year = year;
-  this.id = id;
 }
 
 function addBookToLibrary(author, title, pages, year, read) {
