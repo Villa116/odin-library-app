@@ -9,6 +9,12 @@ const openFormBtn = document.getElementById('open-form-btn');
 const closeFormBtn = document.getElementById('close-form-btn');
 const bookForm = document.getElementById('add-book-form');
 
+const authorInput = document.getElementById('author');
+const titleInput = document.getElementById('title');
+const pagesInput = document.getElementById('pages');
+const yearInput = document.getElementById('year');
+const readSelect = document.getElementById('read');
+
 openFormBtn.addEventListener('click', () => {
   modal.classList.remove('hidden');
 });
@@ -18,20 +24,106 @@ closeFormBtn.addEventListener('click', () => {
   bookForm.reset();
 });
 
+// Live Inline Validation Listeners
+authorInput.addEventListener('input', validateAuthor);
+titleInput.addEventListener('input', validateTitle);
+pagesInput.addEventListener('input', validatePages);
+yearInput.addEventListener('input', validateYear);
+readSelect.addEventListener('change', validateRead);
+
+function validateAuthor() {
+  const errorEl = document.getElementById('author-error');
+  if (authorInput.validity.valueMissing) {
+    errorEl.textContent = 'Author name must be filled!';
+  } else if (authorInput.validity.tooShort) {
+    errorEl.textContent = `Author name must be at least ${authorInput.minLength} characters.`;
+  } else {
+    errorEl.textContent = '';
+    return true;
+  }
+  return false;
+}
+
+function validateTitle() {
+  const errorEl = document.getElementById('title-error');
+  if (titleInput.validity.valueMissing) {
+    errorEl.textContent = 'Book title is required!';
+  } else {
+    errorEl.textContent = '';
+    return true;
+  }
+  return false;
+}
+
+function validatePages() {
+  const errorEl = document.getElementById('pages-error');
+  if (pagesInput.validity.valueMissing) {
+    errorEl.textContent = 'Number of pages is required!';
+  } else if (pagesInput.validity.rangeUnderflow) {
+    errorEl.textContent = 'Pages must be at least 1.';
+  } else {
+    errorEl.textContent = '';
+    return true;
+  }
+  return false;
+}
+
+function validateYear() {
+  const errorEl = document.getElementById('year-error');
+  if (yearInput.validity.valueMissing) {
+    errorEl.textContent = 'Published year is required!';
+  } else if (yearInput.validity.rangeUnderflow || yearInput.validity.rangeOverflow) {
+    errorEl.textContent = 'Please enter a valid year between 1000 and 2026.';
+  } else {
+    errorEl.textContent = '';
+    return true;
+  }
+  return false;
+}
+
+function validateRead() {
+  const errorEl = document.getElementById('read-error');
+  if (readSelect.value === "") {
+    errorEl.textContent = 'Please select a read status.';
+    readSelect.setCustomValidity('Please select a read status');
+  } else {
+    errorEl.textContent = '';
+    readSelect.setCustomValidity('');
+    return true;
+  }
+  return false;
+}
+
+function clearErrors() {
+  document.querySelectorAll('.error').forEach(el => el.textContent = '');
+}
+
 bookForm.addEventListener('submit', (event) => {
   event.preventDefault();
 
-  addBookToLibrary(
-    document.getElementById('author').value,
-    document.getElementById('title').value,
-    document.getElementById('pages').value,
-    document.getElementById('year').value,
-    document.getElementById('read').value
-  );
+  const isAuthorValid = validateAuthor();
+  const isTitleValid = validateTitle();
+  const isPagesValid = validatePages();
+  const isYearValid = validateYear();
+  const isReadValid = validateRead();
 
-  displayBooks(myLibrary);
-  modal.classList.add('hidden');
-  bookForm.reset();
+  if (isAuthorValid && isTitleValid && isPagesValid && isYearValid && isReadValid) {
+    addBookToLibrary(
+      authorInput.value,
+      titleInput.value,
+      pagesInput.value,
+      yearInput.value,
+      readSelect.value
+    );
+  
+    displayBooks(myLibrary);
+    modal.classList.add('hidden');
+    bookForm.reset();
+    clearErrors();
+    alert('High five! ✋ Book added successfully.');
+} else {
+  alert('Please correct the validation errors before saving.');
+  }
 });
 
 class Book {
@@ -90,7 +182,6 @@ function setupToggleListners() {
 
       if (targetBook) {
         targetBook.read = targetBook.read === "Yes" ? "No" : "Yes";
-
         displayBooks(myLibrary);
       }
     });
